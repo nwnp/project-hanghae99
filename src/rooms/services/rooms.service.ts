@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateRoomDto } from '../dto/create.room.dto';
 import { SearchRoomDto } from '../dto/search.room.dto';
 import { UpdateRoomDto } from '../dto/update.room.dto';
@@ -107,7 +107,12 @@ export class RoomsService {
         })
         .getMany();
     }
-    return { result: { success: true, roomList } };
+    if(roomList.length == 0) { 
+      return { result: { success: false, msg: '검색 결과가 없습니다.' } };
+    } else{ 
+      return { result: { success: true, roomList } };
+    }
+    
   }
 
   // 방 비밀번호 체크
